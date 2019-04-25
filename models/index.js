@@ -21,6 +21,8 @@ const Page = db.define("page", {
   }
 });
 
+
+
 const User = db.define("user", {
   name: {
     type: Sequelize.STRING,
@@ -30,9 +32,27 @@ const User = db.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      isEmail: true
-    }
-  }
+      isEmail: true,
+    },
+  //   unique: {
+  //     args: true,
+  //     msg: 'Email address already in use!'
+  // }
+      }
+
 });
+
+Page.belongsTo(User,{as:'author'});
+User.hasMany(Page);
+
+
+Page.beforeValidate((pageInstance) => {
+  function generateSlug (title) {
+    return title.replace(/\s+/g, '_').replace(/\W/g, '');
+  }
+  pageInstance.slug = generateSlug(pageInstance.title)
+})
+
+
 
 module.exports = { Page, User, db };

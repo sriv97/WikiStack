@@ -7,7 +7,6 @@ const models = require("./models");
 const wikiRouter = require("./routes/wiki");
 const userRouter = require("./routes/user");
 
-
 const app = express();
 
 app.use(express.static(__dirname + "/public"));
@@ -15,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
 app.use("/wiki", wikiRouter);
-//app.use("/user", userRouter);
+app.use("/users", userRouter);
 
 db.authenticate().then(() => {
   console.log("connted to the database!");
